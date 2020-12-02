@@ -9,15 +9,15 @@ const http = require('http');
 const url = "http://js-agent.newrelic.com/nr-loader-spa-current.min.js";
 
 exports.handler = async (event, context, callback) => {
-
     // Set the params for fetching the index.html from the S3 bucket. This will be dynamic based on environment, and logic will be used for target selection.
+    // We must fetch the object from S3 because the origin response does not expose the content body of the target object.
     const params = {
         Bucket: 'itpro-poc-plugins-us-east-1',
         Key: 'index.html',
     };
 
     try {
-        // Fetch the index.html from the S3 bucket.
+        // Fetch the index.html from the S3 bucket. We cannot use an S3 Select, as that only applies to objects of CSV, JSON, or Parquet format.
         const data = await s3.getObject(params).promise();
         const html = data.Body.toString();
         // Determine where to inline the New Relic Brwoser script.
