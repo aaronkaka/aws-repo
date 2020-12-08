@@ -26,6 +26,7 @@ exports.handler = async (event, context, callback) => {
         const inlineIndex = html.indexOf('NREUM.info');
         // GET the New Relic Browser script from the target CDN.
         const NRPromise = new Promise(function(resolve, reject) {
+
             http.get(url, (res) => {
                 let NRData = '';
 
@@ -33,6 +34,7 @@ exports.handler = async (event, context, callback) => {
                   res.on('data', (chunk) => {
                     NRData += chunk;
                   });
+
                 // The whole response has been received. Print out the result.
                   res.on('end', () => {
                     resolve(NRData);
@@ -45,11 +47,8 @@ exports.handler = async (event, context, callback) => {
         const NRscript = await NRPromise;
 
         // Inline the script into the proper position in the HTML.
-        var bodyContent = '';
-        if (inlineIndex > -1) {
-            bodyContent = html.substring(0, inlineIndex) + NRscript + html.substring(inlineIndex);
-            bodyContent = bodyContent.replace(/\r?\n|\r/g, " ");
-        }
+        let bodyContent = inlineIndex > -1 ? html.substring(0, inlineIndex) + NRscript + html.substring(inlineIndex) : '';
+        bodyContent = bodyContent.replace(/\r?\n|\r/g, " ");
 
         // Set up the response object.
         const response = {
@@ -68,7 +67,7 @@ exports.handler = async (event, context, callback) => {
 
     } catch (err) {
         console.log(err);
-        const message = `Error getting object ${key} from bucket ${bucket}. Make sure they exist and your bucket is in the same region as this function.`;
+        const message = `Error getting object ${params.Key} from bucket ${params.Bucket}. Make sure they exist and your bucket is in the same region as this function.`;
         console.log(message);
         throw new Error(message);
     }
