@@ -13,14 +13,14 @@ exports.handler = async (event, context, callback) => {
     console.log('Received event:', JSON.stringify(event, null, 2));
     // Set the params for fetching the index.html from the S3 bucket. This will be dynamic based on environment, and logic will be used for target selection.
     // We must fetch the object from S3 because the origin response does not expose the content body of the target object.
-    let params = { Bucket: 'default', Key: 'index.html' };
+    let s3Params = { Bucket: 'default', Key: 'index.html' };
     if (event.Records[0].cf.request.headers.host[0].value.indexOf('-env') === -1) {
-        params.Bucket = 'itpro-poc-plugins-us-east-1';
+        s3Params.Bucket = 'itpro-poc-plugins-us-east-1';
     }
 
     try {
         // Fetch the index.html from the S3 bucket. We cannot use an S3 Select, as that only applies to objects of CSV, JSON, or Parquet format.
-        const data = await s3.getObject(params).promise();
+        const data = await s3.getObject(s3Params).promise();
         const html = data.Body.toString();
         // Determine where to inline the New Relic Brwoser script.
         const inlineIndex = html.indexOf('NREUM.info');
