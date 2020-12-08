@@ -13,7 +13,7 @@ exports.handler = async (event, context, callback) => {
     console.log('Received event:', JSON.stringify(event, null, 2));
     // Set the params for fetching the index.html from the S3 bucket, which is dynamic based on environment.
     // We must fetch the object from S3 because the origin response does not expose the content body of the target object.
-    const bucketDomainName = event.Records[0].cf.request.origin.s3.domainName;
+    const bucketDomainName = event.Records[0].cf.request.origin.s3.domainName || 'invalid.bucket';
     const s3Params = { Bucket: bucketDomainName.substring(0, bucketDomainName.indexOf('.')), Key: 'index.html' };
 
     try {
