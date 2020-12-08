@@ -20,7 +20,7 @@ exports.handler = async (event, context, callback) => {
         // Fetch the index.html from the S3 bucket. We cannot use an S3 Select, as that only applies to objects of CSV, JSON, or Parquet format.
         const data = await s3.getObject(s3Params).promise();
         const html = data.Body.toString();
-        // Determine where to inline the New Relic Brwoser script.
+        // Determine where to inline the script.
         const inlineIndex = html.indexOf('NREUM.info');
         // GET the New Relic Browser script from the target CDN.
         const NRPromise = new Promise(function(resolve, reject) {
