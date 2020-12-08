@@ -11,12 +11,10 @@ const url = "http://js-agent.newrelic.com/nr-loader-spa-current.min.js";
 exports.handler = async (event, context, callback) => {
 
     console.log('Received event:', JSON.stringify(event, null, 2));
-    // Set the params for fetching the index.html from the S3 bucket. This will be dynamic based on environment, and logic will be used for target selection.
+    // Set the params for fetching the index.html from the S3 bucket, which is dynamic based on environment.
     // We must fetch the object from S3 because the origin response does not expose the content body of the target object.
-    let s3Params = { Bucket: 'default', Key: 'index.html' };
-    if (event.Records[0].cf.request.headers.host[0].value.indexOf('-env') === -1) {
-        s3Params.Bucket = 'itpro-poc-plugins-us-east-1';
-    }
+    const bucketDomainName = event.Records[0].cf.request.origin.s3.domainName;
+    const s3Params = { Bucket: bucketDomainName.substring(0, bucketDomainName.indexOf('.')), Key: 'index.html' };
 
     try {
         // Fetch the index.html from the S3 bucket. We cannot use an S3 Select, as that only applies to objects of CSV, JSON, or Parquet format.
@@ -67,7 +65,7 @@ exports.handler = async (event, context, callback) => {
 
     } catch (err) {
         console.log(err);
-        const message = `Error getting object ${params.Key} from bucket ${params.Bucket}. Make sure they exist and your bucket is in the same region as this function.`;
+        const message = `Error getting object ${s3Params.Key} from bucket ${s3Params.Bucket}. Make sure they exist and your bucket is in the same region as this function.`;
         console.log(message);
         throw new Error(message);
     }
