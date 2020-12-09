@@ -8,7 +8,7 @@ const http = require('http');
 // Set the target for fetching the New Relic Browser script.
 const url = "http://js-agent.newrelic.com/nr-loader-spa-current.min.js";
 
-exports.handler = async (event, context, callback) => {
+exports.handler = async (event, context) => {
 
     console.log('Received event:', JSON.stringify(event, null, 2));
     // Set the params for fetching the index.html from the S3 bucket, which is dynamic based on environment.
@@ -61,7 +61,7 @@ exports.handler = async (event, context, callback) => {
             body: bodyContent,
         };
 
-        callback(null, response);
+        return response;
 
     } catch (err) {
         console.log(err);
