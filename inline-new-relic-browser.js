@@ -18,10 +18,7 @@ exports.handler = async (event, context) => {
 
     try {
         // Fetch the index.html from the S3 bucket. We cannot use an S3 Select, as that only applies to objects of CSV, JSON, or Parquet format.
-        const data = await s3.getObject(s3Params).promise();
-        const html = data.Body.toString();
-        // Determine where to inline the script.
-        const inlineIndex = html.indexOf('NREUM.info');
+        const s3GetObjectPromise = s3.getObject(s3Params).promise();
         // GET the New Relic Browser script from the target CDN.
         const NRPromise = new Promise(function(resolve, reject) {
 
@@ -39,24 +36,35 @@ exports.handler = async (event, context) => {
                   });
 
               }).on('error', (e) => {
-                callback(Error(e))
+                return Error(e);
               });
         });
-        const NRscript = await NRPromise;
 
-        // Inline the script into the proper position in the HTML.
-        let bodyContent = inlineIndex > -1 ? html.substring(0, inlineIndex) + NRscript + html.substring(inlineIndex) : '';
-        bodyContent = bodyContent.replace(/\r?\n|\r/g, " ");
+        const bodyContent = await Promise.all([s3GetObjectPromise, NRPromise]).then((values) => {
+            // Extract the html body from the retrieved object.
+            const html = values[0].Body.toString();
+            // Determine where to inline the script.
+            const inlineIndex = html.indexOf('NREUM.info');
+            const NRscript = values[1];
 
-        // Set up the response object.
+            // Inline the script into the proper position in the HTML.
+            let aggregation = '';
+            if (inlineIndex > -1) {
+                aggregation = html.substring(0, inlineIndex) + NRscript + html.substring(inlineIndex);
+                aggregation = aggregation.replace(/\r?\n|\r/g, " ");
+            }
+
+            return aggregation;
+        });
+
         const response = {
             status: '200',
             statusDescription: 'OK',
             headers: {
-            'content-type': [{
-                key: 'Content-Type',
-                value: 'text/html'
-            }]
+                'content-type': [{
+                    key: 'Content-Type',
+                    value: 'text/html'
+                }]
             },
             body: bodyContent,
         };
