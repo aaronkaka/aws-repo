@@ -30,7 +30,7 @@ exports.handler = async (event, context) => {
                     NRData += chunk;
                   });
 
-                // The whole response has been received. Print out the result.
+                // The whole response has been received. Resolve the promise.
                   res.on('end', () => {
                     resolve(NRData);
                   });
@@ -66,7 +66,7 @@ exports.handler = async (event, context) => {
                     value: 'text/html'
                 }]
             },
-            body: bodyContent,
+            body: bodyContent
         };
 
         return response;
