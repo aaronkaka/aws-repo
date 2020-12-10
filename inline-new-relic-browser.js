@@ -48,11 +48,8 @@ exports.handler = async (event, context) => {
             const NRscript = values[1];
 
             // Inline the script into the proper position in the HTML.
-            let aggregation = '';
-            if (inlineIndex > -1) {
-                aggregation = html.substring(0, inlineIndex) + NRscript + html.substring(inlineIndex);
-                aggregation = aggregation.replace(/\r?\n|\r/g, " ");
-            }
+            let aggregation = inlineIndex > -1 ? html.substring(0, inlineIndex) + NRscript + html.substring(inlineIndex) : '';
+            aggregation = aggregation.replace(/\r?\n|\r/g, " ");
 
             return aggregation;
         });
