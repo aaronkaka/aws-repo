@@ -10,19 +10,20 @@ const url = 'http://js-agent.newrelic.com/nr-loader-spa-current.min.js';
 
 exports.handler = async (event, context) => {
 
-    console.log('Received event:', JSON.stringify(event, null, 2));
-    // Set the params for fetching the index.html from the S3 bucket, which is dynamic based on environment.
-    // We must fetch the object from S3 because the origin response does not expose the content body of the target object.
-    const bucketDomainName = event.Records[0].cf.request.origin.s3.domainName || 'invalid.bucket';
-    const s3Params = { Bucket: bucketDomainName.substring(0, bucketDomainName.indexOf('.')), Key: 'index.html' };
+        console.log('Received event:', JSON.stringify(event, null, 2));
+        const bucketDomainName = event.Records[0].cf.request.origin.s3.domainName || 'invalid.bucket';
+        let s3Params = {};
 
     try {
+        // Set the params for fetching the index.html from the S3 bucket, which is dynamic based on environment.
+        // We must fetch the object from S3 because the origin response does not expose the content body of the target object.
+        s3Params = { Bucket: bucketDomainName.substring(0, bucketDomainName.indexOf('.')), Key: 'index.html' };
+
         // Fetch the index.html from the S3 bucket. We cannot use an S3 Select, as that only applies to objects of CSV, JSON, or Parquet format.
         const s3GetObjectPromise = s3.getObject(s3Params).promise();
 
         // GET the New Relic Browser script from the target CDN.
         const NRPromise = new Promise(function(resolve, reject) {
-
             http.get(url, (res) => {
                 let NRData = '';
 
