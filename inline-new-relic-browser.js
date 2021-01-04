@@ -6,7 +6,7 @@ const s3 = new aws.S3({ apiVersion: '2006-03-01' });
 // Import the core Node.js module for HTTP data transfer - avoiding the need to package up and deploy a third party library for this purpose.
 const http = require('http');
 // Set the target for fetching the New Relic Browser script.
-const url = 'http://js-agent.newrelic.com/nr-loader-spa-current.min.js';
+let scriptUrl = 'http://js-agent.newrelic.com/nr-loader-spa-current.min.js'; // AWS Lambda environment variables are not supported in Lambda@Edge.
 
 exports.handler = async (event, context) => {
 
@@ -24,7 +24,7 @@ exports.handler = async (event, context) => {
 
         // GET the New Relic Browser script from the target CDN.
         const NRPromise = new Promise(function(resolve, reject) {
-            http.get(url, (res) => {
+            http.get(scriptUrl, (res) => {
                 let NRData = '';
 
                 // A chunk of data has been received.
