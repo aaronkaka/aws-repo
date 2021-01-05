@@ -43,9 +43,7 @@ exports.handler = async (event, context) => {
         });
 
         const bodyContent = await Promise.all([s3GetObjectPromise, NRPromise]).then((values) => {
-            // Extract the html body from the retrieved object.
-            const html = values[0].Body.toString();
-            // Determine where to inline the script.
+            const html = values[0].Body ? values[0].Body.toString() : '';
             const inlineIndex = html.indexOf('NREUM.info');
             const NRscript = values[1];
 
