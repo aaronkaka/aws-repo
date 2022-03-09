@@ -1,8 +1,9 @@
 # aws-lambda-functions
 
-Following is a list of reference Lambda functions in this repository. If relevant, a test event is provided in a separate file.
-
 Runtime: Node.js 14.x
+
+If relevant, a test event is provided in a separate file.
+
 
 | Lambda Function | Context | Description |
 | --- | --- | --- |
