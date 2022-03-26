@@ -4,7 +4,6 @@ exports.handler = async (event, context, callback) => {
     if (request.uri.includes('/api')) {
         request.uri = '/';
     }
-
     request.headers['x-api-key'] = [{key: 'X-Api-Key', value: 'Slava_Ukraini!'}];
 
     callback(null, request);
