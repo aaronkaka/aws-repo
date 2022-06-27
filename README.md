@@ -1,6 +1,6 @@
-# aws-lambda-functions
+# aws-repo
 
-Runtime: Node.js 14.x
+Runtime: Node.js 14.x or higher
 
 If relevant, a test event is provided in a separate file.
 
