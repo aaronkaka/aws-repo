@@ -1,0 +1,11 @@
+{
+  "authorizationToken": "eyJraWQiOiJrNTg3Ni4xNTk5ODQ4NzQ0IiwiYWxnIjoiUlM1MTIifQ.eyJzdWIiOiI1MWUzNDJkNzhkNWY0ZjEwOWIyNDlhN2I0MGY1ZGRkYiIsIm9jZCI6IjE2NTY0Mzg5NjEiLCJiaCI6Ii0xMTA2MDkxNzQ1IiwiaXNzIjoiSUVTIiwiaGNjIjoiVVMiLCJ0eXBlIjoic2UiLCJsYW5nIjoiZW5fVVMiLCJleHAiOjE2NTY0NDk3NjIsImRldmljZWlkIjoiNjc3ZDgzMTU4ZTEwZTk5MDc3N2QwODgwIiwiaWF0IjoxNjU2NDM4OTYxLCJjbGllbnRfaWQiOiJqYnhucXZKdzZOSkVNekpMQlFiTVNWV3BnclpVVUMwZyIsInNlc3NpZCI6IjBiOTk4Yzk4LTQ4NGEtNDNmNy1iN2M2LTEzYjA2ZTQyYjI1ZCJ9.Ox3ED_of9UyucKwEHdh2G1usYc-Xf62eZHPrmh6C1U8b9iRAOoInZztM20d8k41k1ME1pppjlfCmK3seK5C3YaysVWhBfn7ZnHwb2N42um4xhRbYxT5up4NitUfnw5rmmwvxgvJgQabSjXbL55Sh4RAURnyuTW_JeJHDIfbKd0g2uzCqWO0FdKUoKhIXDjxrzb8FbWzw54eXU4Wh9zQxKiH3tK7ILE3kcHzUbX7dleIz8ZZT4i_TsAexgZ3WDP-_fa7eHcgtSprvp6DwNsjPqIHFatLrBuVVZqBQL1QaTblNvBVzqVf5gG7xFIBTt2dLh846JYYrPDBDqYFzd8n5Pw",
+  "requestContext": {
+    "apiId": "aaaaaa123123123example123",
+    "accountId": "111122223333",
+    "requestId": "f4081827-1111-4444-5555-5cf4695f339f",
+    "queryString": "mutation CreateEvent {...}\n\nquery MyQuery {...}\n",
+    "operationName": "MyQuery",
+    "variables": {}
+  }
+}
