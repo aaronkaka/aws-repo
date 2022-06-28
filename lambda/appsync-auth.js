@@ -17,14 +17,25 @@ const verificationOptions = {
 exports.handler = async (event) => {
     let token = event.authorizationToken || '';
     const header = token.split(".");
+    // the secret will be decoded using base64 and the token verification will use the original random bytes
     const jwtHead = Buffer.from(header[0], "base64").toString();
     const kid = JSON.parse(jwtHead).kid;
-    console.log('kid: ' + kid);
-    
+
     const key = await client.getSigningKey(kid);
     const signingKey = key.getPublicKey();
-    console.log('signing key: ' + signingKey);
+    console.log('kid: ' + kid + '/ ' + signingKey);
     
-    let response = jwt.verify(token, signingKey, verificationOptions);
-    console.log(response);
+    const response = {
+        isAuthorized: false,
+        resolverContext: JSON.parse(Buffer.from(header[1], "base64").toString())
+    };
+    
+    try {
+        let decoded = jwt.verify(token, signingKey, verificationOptions);
+        response.isAuthorized = true;
+    } catch(err) {
+        console.log(err);
+    }
+    
+    return response
 };
