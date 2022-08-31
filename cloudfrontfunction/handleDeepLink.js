@@ -1,5 +1,5 @@
 function handler(event) {
-    // NOTE: This function is for a viewer request event trigger.
+    // NOTE: This function is for a viewer request event trigger on the Default behavior (fetching SPA static assets from an S3 bucket).
     var request = event.request;
     var terms = ["/index.html/", "/index.html#"];
     var hasDeepLinkSignature = terms.some(term => request.uri.includes(term));
