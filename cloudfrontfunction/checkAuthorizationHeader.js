@@ -7,7 +7,7 @@ function handler(event) {
         console.log('Error: No authorization JWT found');
         var errorResponse = {
             statusCode: 401,
-            statusDescription: 'Unauthorized',
+            statusDescription: 'Unauthorized - Authorization header required',
             headers: {
                 'cloudfront-functions': { value: 'generated-by-CloudFront-Functions' }
             }
