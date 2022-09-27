@@ -2,10 +2,11 @@ const jwt = require('jsonwebtoken');
 const jwksClient = require('jwks-rsa');
 
 const client = jwksClient({
-    cache: true, // Default Value
+    cache: true,
     cacheMaxEntries: 32,
+    // Default cacheMaxAge value is 10h
     jwksUri: process.env.JWKS_URI + 'jwks.json',
-    timeout: 30000 // Defaults to 30s
+    timeout: 15000 // 15s
 });
 const verificationOptions = {
     "algorithms": "RS512"
