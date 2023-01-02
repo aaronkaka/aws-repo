@@ -20,6 +20,7 @@ exports.handler = async (event) => {
     const jwtHead = Buffer.from(header[0], "base64").toString();
     // get reference to signing key
     const kid = JSON.parse(jwtHead).kid;
+    // the following will attempt to pull from cache
     const key = await client.getSigningKey(kid);
     const signingKey = key.getPublicKey();
     const jwtPayload = Buffer.from(header[1], "base64").toString();
