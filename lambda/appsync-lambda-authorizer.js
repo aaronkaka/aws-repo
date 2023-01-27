@@ -13,6 +13,8 @@ const verificationOptions = {
 }
 
 exports.handler = async (event) => {
+    console.log('jwks client: ', JSON.stringify(client, null, 2));
+
     const userToken = event.authorizationToken || '';
     // begin parsing the authorization token
     const header = userToken.split(".");
